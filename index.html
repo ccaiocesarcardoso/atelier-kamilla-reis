@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier Kamilla Reis | Gestão Profissional</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div id="toast-container"></div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <h2>Atelier</h2>
+                <p>Kamilla Reis</p>
+            </div>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" placeholder="Digite seu usuário..." required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="remember-me">
+                    <label for="remember-me">Lembrar senha</label>
+                </div>
+                <button type="submit" class="btn-save" style="margin-top: 1.5rem; width: 100%;">
+                    Acessar Sistema <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app-container" style="display: none;">
+
+        <!-- SIDEBAR -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Atelier</h2>
+                <p>Kamilla Reis</p>
+            </div>
+            <ul class="menu-items">
+                <li><a href="#" class="nav-link active" data-target="section-dashboard"><i class="fas fa-chart-pie"></i>
+                        <span>Dashboard</span></a></li>
+                <li><a href="#" class="nav-link" data-target="section-cadastro-cliente"><i class="fas fa-users"></i>
+                        <span>Clientes</span></a></li>
+                <li><a href="#" class="nav-link" data-target="section-cadastro-produto"><i class="fas fa-tags"></i>
+                        <span>Serviços</span></a></li>
+                <li><a href="#" class="nav-link" data-target="section-pedidos"><i class="fas fa-plus-circle"></i>
+                        <span>Novo Pedido</span></a></li>
+                <li><a href="#" class="nav-link" data-target="section-financeiro"><i class="fas fa-wallet"></i>
+                        <span>Financeiro</span></a></li>
+                <li><a href="#" class="nav-link" data-target="section-configuracoes"><i class="fas fa-sliders-h"></i>
+                        <span>Ajustes</span></a></li>
+            </ul>
+            <div class="logout">
+                <a href="#" id="btn-sair"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
+            </div>
+        </nav>
+
+        <!-- CONTENT -->
+        <main class="content">
+            <header>
+                <h1 id="main-title">Painel de Controle</h1>
+            </header>
+
+            <!-- DASHBOARD SECTION (Professional V2) -->
+            <section id="section-dashboard" class="main-section">
+                <!-- Top Alerts -->
+                <div id="dashboard-alerts"></div>
+
+                <!-- Metric Cards Grid -->
+                <div class="dashboard-cards-v2">
+                    <!-- Blue Card (Primary Metric) -->
+                    <div class="stat-card blue">
+                        <div class="stat-icon"><i class="fas fa-cut"></i></div>
+                        <div class="stat-info">
+                            <h2 id="dash-pedidos-hoje">0</h2>
+                            <p>Entregas Hoje</p>
+                        </div>
+                    </div>
+
+                    <!-- Grey Card 1 -->
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-handshake"></i></div>
+                        <div class="stat-info">
+                            <h2 id="dash-concluidos-mes">0</h2>
+                            <p>Concluídos este mês</p>
+                        </div>
+                    </div>
+
+                    <!-- Grey Card 2 -->
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-info">
+                            <h2 id="dash-pendentes">0</h2>
+                            <p>Aguardando Retirada</p>
+                        </div>
+                    </div>
+
+                    <!-- Grey Card 3 -->
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="stat-info">
+                            <h2 id="dash-previsao-semana">0</h2>
+                            <p>Previstas (7 dias)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pedidos em Andamento List -->
+                <div class="recent-orders-container">
+                    <div class="section-header">
+                        <h3>PEDIDO EM ANDAMENTO</h3>
+                        <div class="header-actions">
+                            <div class="mini-search">
+                                <input type="text" placeholder=", Pedido">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <i class="fas fa-expand-alt" style="color: #cbd5e1; cursor: pointer;"></i>
+                        </div>
+                    </div>
+                    <div class="recent-list">
+                        <!-- Items injected by JS -->
+                        <div id="dashboard-recent-list"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CLIENTES SECTION -->
+            <section id="section-cadastro-cliente" class="main-section" style="display:none">
+                <div class="card-form">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                        <h3><i class="fas fa-user-plus"></i> Cadastro de Cliente</h3>
+                    </div>
+                    <form id="client-form">
+                        <input type="hidden" id="client-index">
+                        <div class="form-row" style="grid-template-columns: 2fr 1fr 1fr auto;">
+                            <div class="input-group">
+                                <label>Nome Completo</label>
+                                <input type="text" id="nome" required placeholder="Ex: Maria Silva">
+                            </div>
+                            <div class="input-group">
+                                <label>Telefone</label>
+                                <input type="tel" id="telefone" required placeholder="(XX) XXXXX-XXXX">
+                            </div>
+                            <div class="input-group">
+                                <label>Data Cadastro</label>
+                                <input type="date" id="data_cadastro" required>
+                            </div>
+                            <button type="submit" class="btn-save" style="height: 50px; margin-bottom: 2px;"><i
+                                    class="fas fa-check"></i> Salvar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-list">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-client" placeholder="Buscar por nome ou telefone..."
+                            class="search-input">
+                        <div id="spinner-client" class="search-spinner"></div>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Telefone</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SERVIÇOS SECTION -->
+            <section id="section-cadastro-produto" class="main-section" style="display:none">
+                <div class="card-form">
+                    <h3><i class="fas fa-tag"></i> Tabela de Preços</h3>
+                    <form id="product-form">
+                        <div class="form-row" style="grid-template-columns: 3fr 1fr auto;">
+                            <div class="input-group">
+                                <label>Nome do Serviço</label>
+                                <input type="text" id="product-name" required placeholder="Ex: Bainha calça jeans">
+                            </div>
+                            <div class="input-group">
+                                <label>Preço Base (R$)</label>
+                                <input type="number" id="product-value" step="0.01" required placeholder="0,00">
+                            </div>
+                            <button type="submit" class="btn-save" style="height: 50px; margin-bottom: 2px;"><i
+                                    class="fas fa-plus"></i> Adicionar</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-list">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Serviço</th>
+                                    <th>Valor Estimado</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PEDIDOS SECTION -->
+            <section id="section-pedidos" class="main-section" style="display:none">
+                <div class="card-form">
+                    <h3><i class="fas fa-file-invoice"></i> Novo Pedido</h3>
+                    <form id="order-form">
+                        <div class="form-row" style="grid-template-columns: 2fr 1fr 1fr;">
+                            <div class="input-group">
+                                <label>Cliente</label>
+                                <select id="order-client" required>
+                                    <option value="" disabled selected>Selecione um cliente...</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Data Entrada</label>
+                                <input type="date" id="order-entry-date" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Previsão Entrega</label>
+                                <input type="date" id="order-exit-date" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row"
+                            style="grid-template-columns: 1fr 2fr auto; background: #F8FAFC; padding: 20px; border-radius: 8px;">
+                            <div class="input-group">
+                                <label>Serviço</label>
+                                <select id="order-service-select">
+                                    <option value="" disabled selected>Escolha...</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Detalhes / Observações</label>
+                                <input type="text" id="order-service-desc" placeholder="Ex: Cortar 2cm na barra...">
+                            </div>
+                            <button type="button" id="add-service-btn" class="btn-save" style="margin-bottom: 2px;">
+                                <i class="fas fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+
+                        <div class="card-list"
+                            style="padding: 1rem; margin-bottom: 1.5rem; background: #F8FAFC; border: 1px solid #E2E8F0;">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th style="text-align: right;">Valor</th>
+                                            <th style="width: 50px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="order-items-table"></tbody>
+                                </table>
+                            </div>
+                            <div id="empty-cart-msg"
+                                style="text-align: center; color: var(--text-muted); padding: 1rem;">
+                                Nenhum serviço adicionado ainda.
+                            </div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+                            <p style="font-size: 1.1rem; color: var(--text-muted);">Subtotal: <strong
+                                    id="order-subtotal">R$ 0,00</strong></p>
+                            <div class="input-group" style="width: 200px;">
+                                <label>Desconto (R$)</label>
+                                <input type="number" id="order-discount" value="0" step="0.01"
+                                    style="text-align: right;">
+                            </div>
+                            <h3 style="font-size: 1.5rem; color: var(--primary);">Total: <span id="order-total">R$
+                                    0,00</span></h3>
+
+                            <button type="submit" class="btn-save"
+                                style="margin-top: 1rem; width: auto; padding-left: 3rem; padding-right: 3rem;">
+                                <i class="fas fa-check-circle"></i> Finalizar Pedido
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- FINANCEIRO SECTION -->
+            <section id="section-financeiro" class="main-section" style="display:none">
+                <!-- Using the same structure as Dashboard V2 for valid horizontal look -->
+                <div class="dashboard-cards-v2">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                        <div class="stat-info">
+                            <h2 id="fin-total-pendente" style="color: var(--danger)">R$ 0,00</h2>
+                            <p>A Receber</p>
+                        </div>
+                    </div>
+                    <div class="stat-card blue">
+                        <div class="stat-icon"><i class="fas fa-check-double"></i></div>
+                        <div class="stat-info">
+                            <h2 id="fin-total-pago">R$ 0,00</h2>
+                            <p>Total Recebido</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Summary Section -->
+                <div class="card-form" style="margin-bottom: 2rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="margin:0;"><i class="fas fa-calendar-check"></i> Resumo Mensal</h3>
+                        <input type="month" id="finance-month-picker"
+                            style="padding: 0.5rem; border: 1px solid #CBD5E1; border-radius: 0.375rem;">
+                    </div>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <!-- Mini Card 1: Quantity -->
+                        <div
+                            style="background: #F8FAFC; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #E2E8F0; text-align: center;">
+                            <p
+                                style="color: var(--text-muted); font-size: 0.875rem; font-weight: 600; text-transform: uppercase;">
+                                Qtd Serviços</p>
+                            <h2 id="month-qtd" style="font-size: 2rem; color: var(--primary); margin-top: 0.5rem;">0
+                            </h2>
+                        </div>
+
+                        <!-- Mini Card 2: Received -->
+                        <div
+                            style="background: #F8FAFC; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #E2E8F0; text-align: center;">
+                            <p
+                                style="color: var(--text-muted); font-size: 0.875rem; font-weight: 600; text-transform: uppercase;">
+                                Recebido</p>
+                            <h2 id="month-received" style="font-size: 2rem; color: var(--success); margin-top: 0.5rem;">
+                                R$ 0,00</h2>
+                        </div>
+
+                        <!-- Mini Card 3: Pending -->
+                        <div
+                            style="background: #F8FAFC; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #E2E8F0; text-align: center;">
+                            <p
+                                style="color: var(--text-muted); font-size: 0.875rem; font-weight: 600; text-transform: uppercase;">
+                                A Receber</p>
+                            <h2 id="month-pending" style="font-size: 2rem; color: var(--danger); margin-top: 0.5rem;">R$
+                                0,00</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-list">
+                    <div class="section-header">
+                        <h3>HISTÓRICO FINANCEIRO</h3>
+                        <div class="mini-search">
+                            <input type="text" id="search-order" placeholder="Buscar cliente...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ref.</th>
+                                    <th>Cliente</th>
+                                    <th>Entrega</th>
+                                    <th>Status</th>
+                                    <th>Forma Pgto</th>
+                                    <th>Total</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AJUSTES SECTION -->
+            <section id="section-configuracoes" class="main-section" style="display:none">
+                <div class="card-form">
+                    <h3><i class="fas fa-database"></i> Backup & Dados</h3>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">Mantenha seus dados seguros exportando um
+                        backup regularmente.</p>
+                    <div class="form-row">
+                        <button onclick="exportData()" class="btn-save" style="width: auto;">
+                            <i class="fas fa-download"></i> Exportar Backup
+                        </button>
+                        <label class="btn-save" style="background: var(--secondary); width: auto; cursor: pointer;">
+                            <i class="fas fa-upload"></i> Restaurar Dados
+                            <input type="file" onchange="importData(this)" style="display:none">
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- FOOTER -->
+            <footer class="app-footer">
+                <p>Desenvolvido por // <strong>Caio César Cardoso</strong> &copy; 2026</p>
+                <p class="version">Versão 1.0.0</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- HIDDEN RECEIPT TEMPLATE (Cleaned Up) -->
+    <div id="receipt-template" style="display: none;">
+        <div class="receipt-box">
+            <div class="receipt-header">
+                <h2>Atelier Kamilla Reis</h2>
+                <p>Comprovante de Pedido</p>
+            </div>
+            <div class="receipt-info">
+                <p><strong>Cliente:</strong> <span id="rec-client-name"></span></p>
+                <p><strong>Entrada:</strong> <span id="rec-entry"></span> &nbsp;|&nbsp; <strong>Entrega:</strong> <span
+                        id="rec-exit"></span></p>
+            </div>
+            <table class="receipt-items">
+                <thead>
+                    <tr>
+                        <th>Serviço</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody id="rec-items"></tbody>
+            </table>
+            <div class="receipt-total">
+                <h3>Total: <span id="rec-total"></span></h3>
+            </div>
+            <div class="receipt-footer">
+                <p>Obrigado pela preferência!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAYMENT MODAL -->
+    <div id="payment-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div
+                    style="background: #EEF2FF; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto;">
+                    <i class="fas fa-wallet" style="font-size: 1.5rem; color: var(--primary);"></i>
+                </div>
+                <h3>Confirmar Pagamento</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Selecione a forma como o pagamento foi
+                    realizado.</p>
+            </div>
+
+            <div class="input-group">
+                <label>Forma de Pagamento</label>
+                <select id="payment-method-select" style="width: 100%;">
+                    <option value="Pix">Pix</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Cartão de Crédito">Cartão de Crédito</option>
+                    <option value="Cartão de Débito">Cartão de Débito</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button onclick="closePaymentModal()" class="btn-secondary">Cancelar</button>
+                <button onclick="confirmPayment()" class="btn-save" style="flex: 1;">
+                    <i class="fas fa-check"></i> Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WHATSAPP MODAL -->
+    <div id="whatsapp-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div
+                    style="background: #DCFCE7; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto;">
+                    <i class="fab fa-whatsapp" style="font-size: 2.0rem; color: #166534;"></i>
+                </div>
+                <h3>Enviar WhatsApp</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Confirme o número antes de enviar.</p>
+            </div>
+
+            <div class="input-group">
+                <label>Número com DDD (ex: 11999990000)</label>
+                <input type="text" id="whatsapp-number-input" placeholder="11999999999"
+                    style="font-size: 1.2rem; text-align: center; letter-spacing: 1px;">
+            </div>
+
+            <div class="modal-actions">
+                <button onclick="closeWhatsAppModal()" class="btn-secondary">Cancelar</button>
+                <button onclick="confirmWhatsApp()" class="btn-save" style="flex: 1; background-color: #25D366;">
+                    <i class="fab fa-whatsapp"></i> Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
