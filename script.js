@@ -118,6 +118,12 @@ document.querySelectorAll('.nav-link').forEach(link => {
         if (target === 'section-pedidos') { updateOrderSelects(); resetOrderForm(); }
         if (target === 'section-financeiro') renderOrders();
         if (target === 'section-dashboard') updateDashboard();
+
+        // Mobile: Close sidebar after click
+        if (window.innerWidth <= 768) {
+            document.querySelector('.sidebar').classList.remove('active');
+            document.getElementById('sidebar-overlay').classList.remove('active');
+        }
     });
 });
 
@@ -129,6 +135,25 @@ document.getElementById('btn-sair').addEventListener('click', (e) => {
         window.location.reload();
     }
 });
+
+// --- MOBILE MENU EVENTS ---
+const mobileBtn = document.getElementById('mobile-menu-btn');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+const sidebar = document.querySelector('.sidebar');
+
+if (mobileBtn) {
+    mobileBtn.addEventListener('click', () => {
+        sidebar.classList.add('active');
+        sidebarOverlay.classList.add('active');
+    });
+}
+
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+    });
+}
 
 // --- GESTÃO DE CLIENTES ---
 document.getElementById('client-form').addEventListener('submit', (e) => {
